@@ -1,0 +1,31 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: |
+          pip install requests pyinstaller
+
+      - name: Criar EXE
+        run: |
+          pyinstaller --onefile baixar_zip.py
+
+      - name: Upload do EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: baixar_zip_exe
+          path: dist/baixar_zip.exe
